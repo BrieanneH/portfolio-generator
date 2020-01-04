@@ -1,0 +1,24 @@
+{
+  "name": "portfolio-generator",
+  "version": "1.0.0",
+  "description": "\"Node.js and ES6+ Homework\"",
+  "main": "index.js",
+  "dependencies": {
+    "electron": "^7.1.7",
+    "inquirer": "^7.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrieanneH/portfolio-generator.git"
+  },
+  "author": "Brieanne_Howard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrieanneH/portfolio-generator/issues"
+  },
+  "homepage": "https://github.com/BrieanneH/portfolio-generator#readme"
+}

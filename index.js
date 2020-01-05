@@ -37,9 +37,9 @@ function init() {
                 .then((response) => {
 
 
-                    // axios
-                    //     .get(`https://api.github.com/users/${username}/repos?per_page=100`)
-                    //     .then((response) => {
+                    axios
+                      .get(`https://api.github.com/users/${username}/repos?per_page=100`)
+                       .then((response) => {
                             let info = response.data;
                             info.color = color;
                             info.stars = 0;
@@ -54,12 +54,12 @@ function init() {
                                 if (err) {
                                     return console.error(err);
                                 }
-                                // console.log(result.numberOfPages);
-                                // console.log(result.logs);
+                                 console.log(result.numberOfPages);
+                                console.log(result.logs);
                                 result.stream.pipe(fs.createWriteStream(path.join(__dirname,'github.pdf')));
                                 conversion.kill();
                             })
-                            // })
+                             })
                             open(path.join(process.cwd(), "github.pdf"));
                         });
         })

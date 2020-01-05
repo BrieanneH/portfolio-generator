@@ -1,28 +1,23 @@
 {
-  "name": "portfolio-generator",
+  "name": "static-site",
   "version": "1.0.0",
-  "description": "\"Node.js and ES6+ Homework\"",
+  "description": "",
   "main": "index.js",
-  "dependencies": {
-    "axios": "^0.19.0",
-    "electron": "^7.1.7",
-    "electron-html-to": "^2.6.0",
-    "html-pdf": "^2.2.0",
-    "inquirer": "^7.0.1",
-    "open": "^7.0.0"
-  },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/BrieanneH/portfolio-generator.git"
-  },
-  "author": "Brieanne_Howard",
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/BrieanneH/portfolio-generator/issues"
-  },
-  "homepage": "https://github.com/BrieanneH/portfolio-generator#readme"
+  "dependencies": {
+    "axios": "^0.19.0",
+    "dotenv": "^8.2.0",
+    "electron": "^5.0.3",
+    "electron-html-to": "^2.6.0",
+    "font-awesome": "^4.7.0",
+    "fontawesome": "^5.6.3",
+    "fs": "0.0.1-security",
+    "inquirer": "^6.5.2",
+    "open": "^6.4.0",
+    "path": "^0.12.7"
+  }
 }

@@ -1,67 +1,71 @@
 const fs = require("fs");
 const path = require("path");
 const open = require("open");
-const axios = require('axios');
 const inquirer = require('inquirer');
 const convertFactory = require('electron-html-to');
-const { generateHTML } = require("./generateHTML");
+const api = require("./api")
+const generateHTML = require("./generateHTML");
 
-
-var conversion = convertFactory({
-    converterPath: convertFactory.converters.PDF
-});
 
 const questions = [
     {
         type: "input",
-        name: "username",
-        message: "Enter your GitHub Username"
+        name: "github",
+        message: "What's your GitHub username?"
     },
     {
         type: "list",
         name: "color",
-        message: "What is your favorite color?",
-        choices: ['green', 'blue', 'pink', 'red'],
+        message: "What's your desired color scheme?",
+        choices: ["blue", "red", "green", "pink"]
     }
-
 ];
+//process.cwd used to resolve relative paths from callback containing two arguments
+function writeToFile(fileName, data) {
+    return fs.writeFileSync(path.join(process.cwd(), fileName), data)
+};
 
 function init() {
-    inquirer
-        .prompt(questions)
-        .then(function ({ username, color }) {
-            const queryUrl = `https://api.github.com/users/${username}`;
+    inquirer.prompt(questions).then(({github, color}) => {
+        console.log("Searching...");
 
-            axios
-                .get(queryUrl)
-                .then((response) => {
+        api 
+            .getUser(github)
+            .then(response =>
+                api.getTotalStars(github).then(stars => {
+                    return generateHTML ({
+                        stars,
+                        color,
+                        //spread syntax used
+                        ...response.data
+                    });
+                })
+            )
+            .then(html => {
+                const conversion = convertFactory({
+                    converterPath: convertFactory.converters.PDF
+                });
 
+            conversion({html}, function(err, result) {
+                if (err) {
+                    return console.error(err);
+                };
+                let num = 0;
+                
+                while (fs.existsSync(path.join(__dirname, `resume_${color}_${num}.pdf`))) {
+                    num++
+                };
+                result.stream.pipe(
+                    fs.createWriteStream(path.join(__dirname, `resume_${color}_${num}.pdf`))
+                    );
+                    //terminates convertPDF process
+                    conversion.kill();
 
-                    axios
-                      .get(`https://api.github.com/users/${username}/repos?per_page=100`)
-                       .then((response) => {
-                            let info = response.data;
-                            info.color = color;
-                            info.stars = 0;
-                            for (let i = 0; i < info.length; i++) {
-                                info.stars += info[i].stars_count;
-                            }
-                            if (!info.location){
-                                info.location = "No location listed";
-                            }
-                            let resumeHTML = generateHTML(info);
-                            conversion({ html: resumeHTML }, function (err, result) {
-                                if (err) {
-                                    return console.error(err);
-                                }
-                                 console.log(result.numberOfPages);
-                                console.log(result.logs);
-                                result.stream.pipe(fs.createWriteStream(path.join(__dirname,'github.pdf')));
-                                conversion.kill();
-                            })
-                             })
-                            open(path.join(process.cwd(), "github.pdf"));
-                        });
-        })
-}
+                    open(path.join(process.cwd(), `resume_${color}_${num}.pdf`));
+                });
+
+        });
+    });
+};
+
 init();

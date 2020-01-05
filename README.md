@@ -1,4 +1,4 @@
-# portfolio-generatorn
+# portfolio-generation 
 The user will be prompted for a favorite color, which will be used as the background color for cards.
 The PDF will be populated with the following:
 

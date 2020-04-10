@@ -5,8 +5,10 @@ const inquirer = require('inquirer');
 const convertFactory = require('electron-html-to');
 const api = require("./api")
 const generateHTML = require("./generateHTML");
+//requiring 
 
 
+//creating generated questions
 const questions = [
     {
         type: "input",
@@ -20,28 +22,31 @@ const questions = [
         choices: ["blue", "red", "green", "pink"]
     }
 ];
-//process.cwd used to resolve relative paths from callback containing two arguments
+
 function writeToFile(fileName, data) {
     return fs.writeFileSync(path.join(process.cwd(), fileName), data)
 };
 
+//creating a function that walks through the template
 function init() {
+    //start quesions with inquirer
     inquirer.prompt(questions).then(({github, color}) => {
         console.log("Searching...");
 
         api 
-            .getUser(github)
+            .getUser(github)//retrieve github acct
             .then(response =>
-                api.getTotalStars(github).then(stars => {
+                api.getTotalStars(github).then(stars => { //calling to api.js to get github stars
                     return generateHTML ({
                         stars,
                         color,
                         //spread syntax used
                         ...response.data
+                        //allows for expansion (when there are no aruguments used)
                     });
                 })
             )
-            .then(html => {
+            .then(html => { //from electon-html-to package--lets us conver our webpage using electron
                 const conversion = convertFactory({
                     converterPath: convertFactory.converters.PDF
                 });
@@ -55,9 +60,11 @@ function init() {
                 while (fs.existsSync(path.join(__dirname, `resume_${color}_${num}.pdf`))) {
                     num++
                 };
-                result.stream.pipe(
+                //https://nodejs.org/en/knowledge/advanced/streams/how-to-use-stream-pipe/
+                result.stream.pipe(//stream to stem
+               
                     fs.createWriteStream(path.join(__dirname, `resume_${color}_${num}.pdf`))
-                    );
+                    ); //craete stream to an open file desciptor
                     //terminates convertPDF process
                     conversion.kill();
 

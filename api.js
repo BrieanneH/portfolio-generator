@@ -6,6 +6,7 @@ const axios = require("axios");
 //https://www.npmjs.com/package/dotenv
 require("dotenv").config();
 
+//get request from github api 
 const api = {
     getUser(username) {
         return axios
@@ -17,6 +18,7 @@ const api = {
                 process.exit(1);
             });
     },
+    //get request for github stars,
     getTotalStars(username) {
         return axios
             .get(

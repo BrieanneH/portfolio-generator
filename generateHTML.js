@@ -1,3 +1,5 @@
+//temaplate details
+
 const colors = {
   green: {
     wrapperBackground: "#E6E1C3",
